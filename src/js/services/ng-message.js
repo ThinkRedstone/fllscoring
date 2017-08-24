@@ -32,6 +32,9 @@ define('services/ng-message',[
                         def.resolve(ws);
                     };
                     ws.onerror = function(e){
+                        if(e.type === "error"){
+                            alert("mhub server is inaccessible!")
+                        }
                         log("socket error", e);
                     };
                     ws.onclose = function() {
