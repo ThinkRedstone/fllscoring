@@ -1,16 +1,18 @@
-var utils = require('./utils');
-var basicAuthCreds = utils.basicAuthCreds;
+args = require('./args');
+var basicAuth = require('express-basic-auth');
 
-exports.basic = function() {
-    if(!basicAuthCreds) {
-        return function(req, res, next) {
-            next();
-        };
-    }
+var middleware = (req, res, next) => next();
 
-    var basicAuth = require('basic-auth-connect');
-    var pair = basicAuthCreds.split(':');
-    var user = pair[0];
-    var pass = pair[1];
-    return basicAuth(user, pass);
-};
+if (args.user && args.password) {
+    middleware = basicAuth({
+        authorizer: adminAuthorizer,
+        challenge: true
+    });
+}
+
+exports.middleware = middleware;
+
+
+function adminAuthorizer(user, password) {
+    return (args.user === user) && (args.password === password)
+}

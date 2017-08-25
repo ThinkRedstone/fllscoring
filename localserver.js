@@ -4,12 +4,11 @@ var utils = require('./server_modules/utils');
 var fileSystem = require('./server_modules/file_system');
 var args = require('./server_modules/args');
 var views = require('./server_modules/views');
-
+var basicAuth = require('./server_modules/auth');
 var configs = [require('./server_modules/slave_mode')];
 
 var middlewareLayers = [express.static(fileSystem.resolve('src')),
                         require('./server_modules/sessions').middleware,
-                        require('./server_modules/auth').basic(args.basicAuthCreds),
                         require('./server_modules/cors').middleware,
                         require('./server_modules/cache').middleware,
                         require('./server_modules/body_builder').middleware,
@@ -30,6 +29,8 @@ configs.forEach(function(config) {
 middlewareLayers.forEach(function(layer) {
     app.use(layer);
 });
+
+app.use('/admin', basicAuth.middleware);
 
 routers.forEach(function(router) {
     router.route(app);
