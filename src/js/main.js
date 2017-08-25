@@ -48,7 +48,6 @@ define([
                 } else {
                     $scope.pages = [
                         { name: 'scoresheet', title: 'Scoresheet', icon: 'check' },
-                        { name: 'settings', title: 'Settings', icon: 'settings' }
                     ];
                 }
 
