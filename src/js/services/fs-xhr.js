@@ -19,9 +19,7 @@ define('services/fs-xhr',['q','jquery'],function(Q,$) {
         this._get(url).done(function(data) {
             def.resolve(data);
         }).fail(function(data) {
-            if(data.statusText === "error"){ //status text given when server is inaccessible
-                alert("Server is inaccessible!")
-            }
+            handleFailedRequest(data);
             def.reject(data);
         });
 
@@ -34,9 +32,7 @@ define('services/fs-xhr',['q','jquery'],function(Q,$) {
         this._post(url,data).done(function(data) {
             def.resolve(data);
         }).fail(function(data) {
-            if(data.statusText === "error"){ //status text given when server is inaccessible
-                alert("Server is inaccessible!")
-            }
+            handleFailedRequest(data);
             def.reject(data);
         });
         return def.promise;
@@ -54,6 +50,14 @@ define('services/fs-xhr',['q','jquery'],function(Q,$) {
             def.reject(data);
         });
         return def.promise;
+    }
+
+    function handleFailedRequest(responseData) {
+        if (responseData.statusText === "error") { //status text given when server is inaccessible
+            alert(`Server is inaccessible!
+            Check that you are connected to the field Wi-Fi.
+            If this error still persists, talk with the Head Referee`)
+        }
     }
 
     return {
