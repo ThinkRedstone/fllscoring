@@ -33,7 +33,8 @@ define('services/ng-message',[
                     };
                     ws.onerror = function(e){
                         if(e.type === "error"){
-                            alert("mhub server is inaccessible!")
+                            alert(`mhub server is in accessible! 
+                            Check your network connections, and if this persists, contact your Head Referee or Tournament Organizer`)
                         }
                         log("socket error", e);
                     };
