@@ -42,11 +42,9 @@ define('services/fs-xhr',['q','jquery'],function(Q,$) {
         var def = Q.defer();
         var url = baseurl+path;
         this._delete(url).done(function(data) {
-            if(data.statusText === "error"){ //status text given when server is inaccessible
-                alert("Server is inaccessible!")
-            }
             def.resolve(data);
         }).fail(function(data) {
+            handleFailedRequest(data);
             def.reject(data);
         });
         return def.promise;
