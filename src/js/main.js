@@ -38,7 +38,7 @@ define([
 
             $session.load().then(function(session) {
                 $scope.user = session['user'];
-                $scope.serverAddress = $session['serverAddress'];
+                $scope.serverAddress = session['serverAddress'];
                 if($scope.user === 'admin') {
                     $scope.pages = [
                         { name: 'scoresheet', title: 'Scoresheet', icon: 'check' },
