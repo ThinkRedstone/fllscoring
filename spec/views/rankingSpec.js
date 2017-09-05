@@ -10,22 +10,24 @@ describe('ranking', function() {
         number: '123',
         name: 'foo'
     };
-    var fsMock, stagesMock, scoresMock, handshakeMock, messageMock;
+    var fsMock, stagesMock, scoresMock, handshakeMock, messageMock, settingsMock;
 
     beforeEach(function() {
         angular.mock.module(module.name);
         angular.mock.inject(function($controller, $rootScope,$q) {
             $scope = $rootScope.$new();
-            scoresMock = createScoresMock($q);
+            scoresMock = createScoresMock();
             handshakeMock = createHandshakeMock($q);
             stagesMock = createStagesMock();
             messageMock = createMessageMock();
+            settingsMock = createSettingsMock($q, {});
             controller = $controller('rankingCtrl', {
                 '$scope': $scope,
                 '$scores': scoresMock,
                 '$stages': stagesMock,
                 '$handshake': handshakeMock,
-                '$message': messageMock
+                '$message': messageMock,
+                '$settings': settingsMock
             });
         });
     });
@@ -140,8 +142,8 @@ describe('ranking', function() {
             expect($scope.csvdata).toEqual({});
             $scope.rebuildCSV({
                 'qualifying': [
-                    { rank: 1, team: { name: "foo", number: 123 }, highest: 10, scores: [0, 10, 5] },
-                    { rank: 1, team: { name: "\"bar\"", number: 456 }, highest: 10, scores: [10, 0, 5] }
+                    { rank: 1, team: { name: "foo", number: 123 }, highest: { score: 10 }, scores: [0, 10, 5] },
+                    { rank: 1, team: { name: "\"bar\"", number: 456 }, highest: { score: 10 }, scores: [10, 0, 5] }
                 ]
             });
             expect($scope.csvname["qualifying"]).toEqual("ranking_qualifying.csv");
@@ -154,8 +156,8 @@ describe('ranking', function() {
         it('should not skip empty values, but include as empty string',function() {
             $scope.rebuildCSV({
                 'qualifying': [
-                    { team: { name: "foo", number: 123 }, highest: 10, scores: [0, 10, 5] },
-                    { team: { name: "\"bar\"", number: 456 }, highest: 10, scores: [10, 0, 5] }
+                    { team: { name: "foo", number: 123 }, highest: { score: 10 }, scores: [0, 10, 5] },
+                    { team: { name: "\"bar\"", number: 456 }, highest: { score: 10 }, scores: [10, 0, 5] }
                 ]
             });
             expect($scope.csvdata["qualifying"]).toEqual("data:text/csv;charset=utf-8," + encodeURIComponent([
