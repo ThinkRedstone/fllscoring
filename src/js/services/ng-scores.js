@@ -137,7 +137,7 @@ define('services/ng-scores',[
                         };
                     }),
                 };
-                $message.send('scores:ranking', rankingMessage);
+                $message.send('scores:ranking', rankingMessage).catch($message.handleInaccessibleError);
             });
 
         };
@@ -206,7 +206,7 @@ define('services/ng-scores',[
                 log('auto-broadcasting stage ' + stageID);
                 self.broadcastRanking($stages.get(stageID));
             }
-            $message.send('scores:reload');
+            $message.send('scores:reload').catch($message.handleInaccessibleError);
         }
 
         Scores.prototype.create = function(scoresheet, score) {

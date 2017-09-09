@@ -38,10 +38,7 @@ define('services/ng-message',[
                         def.resolve(ws);
                     };
                     ws.onerror = function(e){
-                        if(e.type === "error"){
-                            alert(`mhub server is in accessible! 
-                            Check your network connections, and if this persists, contact your Head Referee or Tournament Organizer`)
-                        }
+                        def.reject(e);
                         log("socket error", e);
                     };
                     ws.onclose = function() {
@@ -69,6 +66,12 @@ define('services/ng-message',[
 
 
             return {
+                handleInaccessibleError: function (e) {
+                    if (e.type === "error") {
+                        alert(`mhub server is in accessible! 
+Check your network connections, and if this persists, contact your Head Referee or Tournament Organizer!`)
+                    }
+                },
                 send: function(topic,data) {
                     return init().then(function(ws) {
                         data = data || {};

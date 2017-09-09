@@ -36,7 +36,7 @@ define('views/clock', [
             };
 
             $scope.notifyAndExecute = function (command) {
-                $message.send(`clock:${command}`);
+                $message.send(`clock:${command}`).catch($message.handleInaccessibleError);
                 $scope[command]();
             };
 
