@@ -4,6 +4,7 @@ var utils = require('./server_modules/utils');
 var fileSystem = require('./server_modules/file_system');
 var args = require('./server_modules/args');
 var views = require('./server_modules/views');
+var defaults = require('./server_modules/defaults');
 
 var configs = [require('./server_modules/slave_mode')];
 
@@ -34,6 +35,8 @@ middlewareLayers.forEach(function(layer) {
 routers.forEach(function(router) {
     router.route(app);
 });
+
+defaults.createDefaultFiles();
 
 app.listen(args.port, function() {
     console.log('Listening on port ', args.port);
