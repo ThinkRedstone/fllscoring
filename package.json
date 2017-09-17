@@ -30,14 +30,15 @@
   },
   "dependencies": {
     "basic-auth-connect": "~1.0.0",
-    "lockfile": "~1.0.3",
-    "uuid": "^3.1.0",
     "express": "^4.10.4",
     "express-session": "^1.5.0",
+    "ip": "^1.1.5",
     "js-beautify": "^1.5.4",
+    "lockfile": "~1.0.3",
     "minimist": "^1.1.0",
     "mkdirp": "~0.5.0",
     "q": "^1.4.1",
+    "uuid": "^3.1.0",
     "xml2js": "^0.4.4"
   }
 }
