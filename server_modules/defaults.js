@@ -1,5 +1,6 @@
 const fileSystem = require('./file_system');
 const ipAddress = require('ip').address();
+const args = require('./args');
 
 var defaults =  {};
 defaults.settings = {
@@ -8,7 +9,10 @@ defaults.settings = {
     askTable: true,
     askReferee: true,
     mhub: `ws://${ipAddress}:13900`,
-    node: 'default'
+    node: 'default',
+    challenge: '2017_en_US',
+    host: `http://${ipAddress}:${args.port}/`,
+    autoPublish: true,
 };
 
 function createDefaultSettings() {
