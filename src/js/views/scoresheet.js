@@ -218,29 +218,31 @@ define('views/scoresheet',[
             $scope.saveEdit = function () {
                 $scope.setPage($scope.pages.find(function (p) {return p.name === "scores"}));//When you finish editing a scoresheet, it returns you to the scores view
                 $scores.delete($scope.scoreEntry);
-                return $scores.loadScoresheet($scope.scoreEntry).then(function (result) {
-                    result.missions.forEach(function (mission) {
-                        var changedMission = $scope.missions.find(function (e) {return e.title === mission.title});
-                        mission.objectives.forEach(function (objective, i) {
-                            if(objective["value"] !== changedMission.objectives[i]["value"]){
-                                var changedValue;
-                                if(objective.options){
-                                    changedValue = objective.options.find(function (o) {return o.value === changedMission.objectives[i]["value"]}).title;
-                                } else {
-                                    changedValue = changedMission.objectives[i]["value"];
-                                }
-                                log(`Changed value of objective ${objective.title} to ${changedValue}`);
-                            }
-                        });
+                $scope.originalScoresheet.missions.forEach(function (mission) {
+                    var changedMission = $scope.missions.find(function (e) {
+                        return e.title === mission.title
                     });
-                    result.team.number !== $scope.scoreEntry.team.number ? log(`changed team to (${$scope.scoreEntry.team.number}) ${$scope.scoreEntry.team.name}`) : void(0);
-                    result.stage.id !== $scope.scoreEntry.stage.id ? log("changed stage to " + $scope.scoreEntry.stage.name) : void(0);
-                    result.round !== $scope.scoreEntry.round ? log("changed round to " + $scope.scoreEntry.round) : void(0);
-                    result.table !== $scope.scoreEntry.table ? log("changed table to " + $scope.scoreEntry.table) : void(0);
-                    result.referee !== $scope.referee ? log("changed referee to " + $scope.referee) : void(0);
-                    $scope.scoreEntry.id = $score.generateUniqueId();//This is a different score after being edited, so it has a different id
-                    $scope.save()
+                    mission.objectives.forEach(function (objective, i) {
+                        if (objective["value"] !== changedMission.objectives[i]["value"]) {
+                            var changedValue;
+                            if (objective.options) {
+                                changedValue = objective.options.find(function (o) {
+                                    return o.value === changedMission.objectives[i]["value"]
+                                }).title;
+                            } else {
+                                changedValue = changedMission.objectives[i]["value"];
+                            }
+                            log(`Changed value of objective ${objective.title} to ${changedValue}`);
+                        }
+                    });
                 });
+                $scope.originalScoresheet.team.number !== $scope.scoreEntry.team.number ? log(`changed team to (${$scope.scoreEntry.team.number}) ${$scope.scoreEntry.team.name}`) : void(0);
+                $scope.originalScoresheet.stage.id !== $scope.scoreEntry.stage.id ? log("changed stage to " + $scope.scoreEntry.stage.name) : void(0);
+                $scope.originalScoresheet.round !== $scope.scoreEntry.round ? log("changed round to " + $scope.scoreEntry.round) : void(0);
+                $scope.originalScoresheet.table !== $scope.scoreEntry.table ? log("changed table to " + $scope.scoreEntry.table) : void(0);
+                $scope.originalScoresheet.referee !== $scope.referee ? log("changed referee to " + $scope.referee) : void(0);
+                $scope.scoreEntry.id = $score.generateUniqueId();//This is a different score after being edited, so it has a different id
+                return $scope.save()
             };
 
             //saves mission scoresheet
@@ -308,6 +310,7 @@ Notice: the score could not be sent to the server. ` +
                 $scope.editingScore = true;
                 $scope.scoreEntry = score;
                 $scores.loadScoresheet(score).then(function (result) {
+                    $scope.originalScoresheet = result;
                     $scope.signature = result.signature;
                     $scope.referee = result.referee;
                     $scope.missions.forEach(function (mission) {
